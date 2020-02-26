@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_1_0.xsd"
+                 version="1.0">
+	
+	<named-query name="queryAllBeverages">
+		<query>Select b From BeverageEntity b ORDER By b.id</query>
+	</named-query>
+	
+	<named-query name="queryAllIncentives">
+    	<query>Select inc From IncentiveEntity inc ORDER By inc.id</query>
+    </named-query>
+    
+    <named-query name="queryAggregatedList">
+    	<query>Select new de.uniba.dsg.dsam.model.IncentiveDTO(inc.id, inc.incentiveType, inc.name)
+    			FROM IncentiveEntity inc Group By inc.id, inc.incentiveType, inc.name
+    	</query>
+    </named-query>
+	
+	<named-query name="queryGetBeveragesWithIncentive">
+    	<query>Select b From BeverageEntity b where b.incentiveEntity.id = :inc_id</query>
+    </named-query>
+	
+	<named-query name="getAllOrders">
+		<query>SELECT c from CustomerOrderEntity c ORDER By c.id</query>
+	</named-query>
+	
+	<named-query name="getAllOrdersWithIncentive">
+		<query>SELECT c from CustomerOrderEntity c where c.existIncentive = True ORDER By c.id</query>
+	</named-query>
+	
+	<named-query name="getOrderWithIncentive">
+		<query>
+			Select cus from CustomerOrderEntity cus JOIN cus.beverageEntities ent where ent.incentiveEntity.id = :inc_id
+		</query>
+	</named-query>
+	
+	<named-query name="getOrderByBeverageID">
+		<query>
+			Select cus from CustomerOrderEntity cus JOIN cus.beverageEntities ent where ent.id = :b_id
+		</query>
+	</named-query>
+	
+</entity-mappings>
